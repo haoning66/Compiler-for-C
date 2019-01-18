@@ -1,0 +1,46 @@
+LL(1) Grammar:
+program -> type_name identifier program_tail       xxxx
+program_tail -> id_list_tail ; program | func_list
+func_list -> e | func_decl func_tail func_list
+func_tail -> ; | {data_decls statements}
+func_decl -> (parameter_list)
+type_name -> int | void
+parameter_list -> e | void | non_empty_list
+non_empty_list -> type_name identifier non_empty_list'
+non_empty_list' -> e | , non_empty_list
+data_decls -> e | type_name id_list ; data_decls
+id_list ->  identifier id_list'
+id_list' -> e | , identifier id_list'       xxxx
+identifier -> identifier identifier'
+identifier' -> e | [ expression ]
+block_statements -> { statements }
+statements -> e | statement statements
+statement -> identifier general_assignment | print_func_call | scanf_func_call | 
+		if_statement | while_statement | return_statement | break_statement | continue_statement
+general_assignment -> = expression ; | ( expr_list ) ;
+printf_func_call -> printf ( string printf_func_call' ) ;
+printf_func_call' -> e | , expression 
+scanf_func_call -> scanf ( string , & expression ) ;
+expr_list -> e | non_empty_expr_list
+non_empty_expr_list -> expression non_empty_expr_list'
+non_empty_expr_list' -> e | , expression non_empty_expr_list'
+if_statement -> if ( condition_expression ) block_statements if_statement'
+if_statement' -> e | else block_statements
+condition_expression -> condition condition_expression'
+condition_expression' -> e | condition_op condition
+condition_op -> && | ||
+condition -> expression comparison_op expression
+comparison_op -> == | != | > | >= | < | <=
+while_statement -> while ( condition_expression ) block_statements
+return_statement -> return return_statement' ;
+return_statement' -> e | expression 
+break_statement -> break;
+continue_statement -> continue;
+expression -> term expression'
+expression' -> e | addop term expression'
+addop -> + | -
+term -> factor term'
+term' -> mulop factor term' | e
+mulop -> * | /
+factor -> identifier factor' | number | - number | ( expression )
+factor' -> e | [ expression ] | ( expr_list )
